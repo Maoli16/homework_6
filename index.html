@@ -12,7 +12,25 @@
     <header>
         <div class="container">
             <div class="header-wrap">
-                <nav>
+                <nav class="header-nav">
+                    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+                    <div class="header-topbar">
+                        <button class="search-button" aria-label="Search" type="button">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="11" cy="11" r="5.5"></circle>
+                                <path d="M16 16L21 21"></path>
+                            </svg>
+                        </button>
+
+                        <div class="brand">LifeStyle</div>
+
+                        <label for="menu-toggle" class="menu-button" aria-label="Open menu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </label>
+                    </div>
+
                     <ul class="header-menu flex">
                         <li class="header-items"><a class="header-link" href="#">LIFESTYLE</a></li>
                         <li class="header-items"><a class="header-link" href="#">PHOTOGRAPHS</a></li>
@@ -117,6 +135,46 @@
 </section>
 <h2 class="loadmore">Load more</h2>
 
+<script>
+    const searchButton = document.querySelector('.search-button');
+    const headerMenu = document.querySelector('.header-menu');
+    const menuItems = [...document.querySelectorAll('.header-link')];
+
+    if (searchButton && headerMenu) {
+        const searchInput = document.createElement('input');
+        searchInput.type = 'text';
+        searchInput.placeholder = 'Search...';
+        searchInput.className = 'search-input';
+        searchInput.setAttribute('aria-label', 'Search menu');
+
+        searchButton.addEventListener('click', () => {
+            const isOpen = searchButton.classList.toggle('active');
+
+            if (isOpen) {
+                searchButton.parentElement.insertBefore(searchInput, searchButton.nextSibling);
+                searchInput.focus();
+                searchInput.value = '';
+            } else {
+                searchInput.remove();
+            }
+        });
+
+        searchInput.addEventListener('input', (event) => {
+            const query = event.target.value.trim().toLowerCase();
+
+            menuItems.forEach((item) => {
+                const text = item.textContent.toLowerCase();
+                const parent = item.closest('.header-items');
+
+                if (!query || text.includes(query)) {
+                    parent.style.display = 'list-item';
+                } else {
+                    parent.style.display = 'none';
+                }
+            });
+        });
+    }
+</script>
 
 </body>
 
